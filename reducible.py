@@ -109,6 +109,7 @@ def find_word(s, hash_table):
             pos = (pos + step) % len(hash_table)
             if pos == start_marker:
                 return False
+    return False
 
 def is_reducible(s, hash_table, hash_memo):
     """
