@@ -13,7 +13,7 @@ code to someone else), the case shall be submitted to the Office of the Dean of
 Students. Academic penalties up to and including an F in the course are likely.
 
 UT EID 1: gp23568
-UT EID 2: ra
+UT EID 2: ra42693
 """
 
 # the constant used to calculate the step size
@@ -110,7 +110,6 @@ def find_word(s, hash_table):
             if pos == start_marker:
                 return False
 
-# TODO: Modify this function. You may delete this comment when you are done.
 def is_reducible(s, hash_table, hash_memo):
     """
     Determines if a string is reducible using a recursive check.
@@ -121,7 +120,19 @@ def is_reducible(s, hash_table, hash_memo):
     post: Returns True if s is reducible (also updates hash_memo by
           inserting s if reducible), otherwise returns False.
     """
-
+    if len(s) == 0:
+        return False
+    if s in ["a", "i", "o"]:
+        return True
+    if find_word(s, hash_table):
+        if find_word(s, hash_memo):
+            insert_word(s, hash_memo)
+            return True
+        for i in range(len(s)):
+            reduced_word = s[:i] + s[i+1:]
+            if is_reducible(reduced_word, hash_table, hash_memo):
+                insert_word(s, hash_memo)
+                return True
     return False
 
 def get_longest_words(string_list):
@@ -144,7 +155,6 @@ def get_longest_words(string_list):
     return temp
 
 
-# TODO: Modify this function. You may delete this comment when you are done.
 def main():
     """The main function that calculates the longest reducible words"""
     # create an empty word_list
@@ -153,6 +163,7 @@ def main():
     # where each line read from input()
     # should be a single word. Append to word_list
     # ensure each word has no trailing white space.
+    # print("doing1")
     try:
         temp = input()
         while temp is not None:
@@ -185,6 +196,7 @@ def main():
     # let us assume it is 10 percent (fairly safe) of the words
     # then M is a prime number that is slightly greater than
     # 0.2 * size of word_list
+    # print("doing2")
     prime_number_m = int(2 * totl_len * 0.1)
     while not is_prime(prime_number_m):
         prime_number_m += 1
@@ -199,20 +211,21 @@ def main():
     # then the word is reducible and you do not have to test
     # any further. add the word to the hash_memo.
     for word in word_list:
+        # print("doing3")
         if is_reducible(word, hash_list, hash_memo):
             reducible_words.append(word)
-            index = hash_word(word, prime_number_m)
-            step = step_size(word)
-            while hash_memo[index] != "":
-                index = (index + step) % prime_number_m
-            hash_memo[index] = word
+            # index = hash_word(word, prime_number_m)
+            # step = step_size(word)
+            # while hash_memo[index] != "":
+            #     index = (index + step) % prime_number_m
+            # hash_memo[index] = word
     # find the largest reducible words in reducible_words
     largest = get_longest_words(reducible_words)
     # print the reducible words in alphabetical order
     # one word per line
+
     for word in largest:
         print(word)
-
 
 if __name__ == "__main__":
     main()
