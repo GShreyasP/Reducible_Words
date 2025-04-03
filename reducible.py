@@ -80,14 +80,13 @@ def insert_word(s, hash_table):
     if hash_table[start_index] == "":
         hash_table[start_index] = s
         return
-    else:
-        if hash_table[start_index] == s:
-            return
-        step = step_size(s)
-        next_index = (start_index + step) % length
-        while (not hash_table[next_index] == "") and hash_table[next_index] != s:
-            next_index = (next_index + step) % length
-        hash_table[next_index] = s
+    if hash_table[start_index] == s:
+        return
+    step = step_size(s)
+    next_index = (start_index + step) % length
+    while (not hash_table[next_index] == "") and hash_table[next_index] != s:
+        next_index = (next_index + step) % length
+    hash_table[next_index] = s
 
 
 def find_word(s, hash_table):
@@ -105,10 +104,9 @@ def find_word(s, hash_table):
     while hash_table[pos] != "":
         if hash_table[pos] == s:
             return True
-        else:
-            pos = (pos + step) % len(hash_table)
-            if pos == start_marker:
-                return False
+        pos = (pos + step) % len(hash_table)
+        if pos == start_marker:
+            return False
     return False
 
 def is_reducible(s, hash_table, hash_memo):
